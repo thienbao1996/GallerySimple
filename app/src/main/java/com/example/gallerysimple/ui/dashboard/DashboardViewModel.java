@@ -8,12 +8,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.gallerysimple.GalleryApplication;
 import com.example.gallerysimple.model.Album;
-import com.example.gallerysimple.model.AlbumItems;
 import com.example.gallerysimple.util.AppDatabase;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -23,7 +21,6 @@ public class DashboardViewModel extends ViewModel {
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     private final MutableLiveData<List<Album>> mListAlbum = new MutableLiveData<>();
-    private final MutableLiveData<List<AlbumItems>> mListAlbumItems = new MutableLiveData<>();
 
     public DashboardViewModel() {
 
@@ -33,23 +30,11 @@ public class DashboardViewModel extends ViewModel {
         return mListAlbum;
     }
 
-    public MutableLiveData<List<AlbumItems>> getLiveDataListAlbumItems() {
-        return mListAlbumItems;
-    }
-
     public void loadAllAlbums() {
         disposable.add(database.albumDao().getAllAlbums()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mListAlbum::postValue, Throwable::printStackTrace)
-        );
-    }
-
-    public void loadItemInAlbum(int id) {
-        disposable.add(database.albumItemsDao().getItemsByAlbumId(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mListAlbumItems::postValue, Throwable::printStackTrace)
         );
     }
 

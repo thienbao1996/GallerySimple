@@ -4,12 +4,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -38,6 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     private final CompositeDisposable disposable = new CompositeDisposable();
     private final AppDatabase database = GalleryApplication.getDatabase();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    // first init all data for app
     public void initDBContent() {
         DirectoryDao directoryDao = database.directoryDao();
         AlbumDao albumDao = database.albumDao();
@@ -126,6 +130,7 @@ public class SplashActivity extends AppCompatActivity {
         );
     }
 
+    // create default albums: All, Favorite, Recycle Bin
     private void initAlbum(AlbumDao albumDao) {
         Album defaultAlbum = new Album();
         defaultAlbum.setName(Constant.ALBUM_DEFAULT);
@@ -144,6 +149,8 @@ public class SplashActivity extends AppCompatActivity {
         );
     }
 
+    // in case new picture taken, load and sync to db
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initDataForDB() {
         DirectoryDao directoryDao = database.directoryDao();
         AlbumDao albumDao = database.albumDao();
@@ -157,7 +164,12 @@ public class SplashActivity extends AppCompatActivity {
                     list.addAll(MediaLoader.getPictures(this));
                     list.addAll(MediaLoader.getVideos(this));
 
-                    if (directories == null || directories.size() == 0 || list.size() > directories.size()) {
+                    //remove all picture already in db
+                    for (Directory directory : directories) {
+                        list.removeIf(directory1 -> directory1.id == directory.id);
+                    }
+
+                    if (directories == null || directories.size() == 0 || list.size() > 0) {
                         disposable.add(directoryDao.insertAll(list)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -26,6 +28,8 @@ import com.example.gallerysimple.model.DirectoryDao;
 import com.example.gallerysimple.util.AppDatabase;
 import com.example.gallerysimple.util.Constant;
 import com.example.gallerysimple.util.Utils;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 
 import java.io.File;
 import java.util.Iterator;
@@ -58,11 +62,32 @@ public class PictureDetail extends AppCompatActivity {
             String path = intent.getStringExtra("path");
             int idDir = intent.getIntExtra("id", 0);
 
-            Bitmap imageBitmap = Utils.rotateBitmap(path);
-            if (imageBitmap != null) {
-                Glide.with(this).load(imageBitmap).into(binding.imgPicture);
-            } else
-                Glide.with(this).load(new File(path)).centerInside().into(binding.imgPicture);
+            // check type image or video
+            if (path.contains("mp4") || path.contains("MP4")) {
+                binding.videoContainer.setVisibility(View.VISIBLE);
+                binding.imgPicture.setVisibility(View.GONE);
+
+                ExoPlayer player = new ExoPlayer.Builder(this).build();
+                binding.videoView.setPlayer(player);
+
+                // Build the media item.
+                MediaItem mediaItem = MediaItem.fromUri(Uri.fromFile(new File(path)));
+                // Set the media item to be played.
+                player.setMediaItem(mediaItem);
+                // Prepare the player.
+                player.prepare();
+                // Start the playback.
+                player.play();
+            } else {
+                binding.imgPicture.setVisibility(View.VISIBLE);
+
+                Bitmap imageBitmap = Utils.rotateBitmap(path);
+                if (imageBitmap != null) {
+                    Glide.with(this).load(imageBitmap).into(binding.imgPicture);
+                } else
+                    Glide.with(this).load(new File(path)).centerInside().into(binding.imgPicture);
+
+            }
 
             disposable.add(database.directoryDao().getDirectoriesById(idDir)
                     .subscribeOn(Schedulers.io())
