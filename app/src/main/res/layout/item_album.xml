@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_album"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/img_album"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#33C9CBCD"
+                android:contentDescription="@string/title_album" />
+
+            <ImageView
+                android:id="@+id/img_album_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_more_vertical_black_24dp"
+                android:background="@drawable/circle"
+                android:layout_margin="4dp"
+                android:contentDescription="@string/options"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_album_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/album_name"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_marginTop="4dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_album_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/album_items"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="4dp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

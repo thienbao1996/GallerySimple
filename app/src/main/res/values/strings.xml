@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">GallerySimple</string>
+    <string name="title_picture">Pictures</string>
+    <string name="title_album">Albums</string>
+    <string name="title_thumbnail">thumbnail</string>
+    <string name="title_favorite">favorite</string>
+    <string name="title_length">length</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_detail">Detail</string>
+    <string name="title_picture_name">Picture name</string>
+    <string name="title_delete">Delete</string>
+    <string name="please_waiting">Please Waiting...</string>
+    <string name="album_name">Album Name</string>
+    <string name="album_items">Album items</string>
+    <string name="create_album">Create Album</string>
+    <string name="input_album_name">Input Album Name</string>
+    <string name="title_cancel">Cancel</string>
+    <string name="title_create">Create</string>
+    <string name="options">Options</string>
+    <string name="delete">delete</string>
+    <string name="edit">edit</string>
+</resources>
