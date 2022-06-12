@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -19,7 +18,6 @@ import com.example.gallerysimple.GalleryApplication;
 import com.example.gallerysimple.R;
 import com.example.gallerysimple.model.Album;
 import com.example.gallerysimple.model.AlbumDao;
-import com.example.gallerysimple.model.AlbumItems;
 import com.example.gallerysimple.model.AlbumItemsDao;
 import com.example.gallerysimple.model.Directory;
 import com.example.gallerysimple.model.DirectoryDao;
@@ -53,12 +51,10 @@ public class SplashActivity extends AppCompatActivity {
             disposable.add(Completable.fromRunnable(this::initDataForDB)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            Intent intent = new Intent(this, MainActivity.class);
-                            startActivity(intent);
-                        }, 2000);
-                    }, Throwable::printStackTrace)
+                    .subscribe(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                    }, 2000), Throwable::printStackTrace)
             );
         }
     }
@@ -78,12 +74,10 @@ public class SplashActivity extends AppCompatActivity {
                 disposable.add(Completable.fromRunnable(this::initDBContent)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                Intent intent = new Intent(this, MainActivity.class);
-                                startActivity(intent);
-                            }, 2000);
-                        }, Throwable::printStackTrace)
+                        .subscribe(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                        }, 2000), Throwable::printStackTrace)
                 );
             } else {
                 System.exit(0);
@@ -98,7 +92,7 @@ public class SplashActivity extends AppCompatActivity {
 
         initAlbum(albumDao);
 
-        disposable.add(directoryDao.getAll()
+        disposable.add(directoryDao.getAllIgnoreDelete()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(directories -> {
@@ -139,7 +133,10 @@ public class SplashActivity extends AppCompatActivity {
         Album favoriteAlbum = new Album();
         favoriteAlbum.setName(Constant.ALBUM_FAVORITE);
 
-        disposable.add(albumDao.insertAlbum(defaultAlbum, favoriteAlbum)
+        Album recycleBin = new Album();
+        recycleBin.setName(Constant.ALBUM_RECYCLE_BIN);
+
+        disposable.add(albumDao.insertAlbum(defaultAlbum, favoriteAlbum, recycleBin)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Log.d("room", "Init albums"),
@@ -152,7 +149,7 @@ public class SplashActivity extends AppCompatActivity {
         AlbumDao albumDao = database.albumDao();
         AlbumItemsDao albumItemsDao = database.albumItemsDao();
 
-        disposable.add(directoryDao.getAll()
+        disposable.add(directoryDao.getAllIgnoreDelete()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(directories -> {

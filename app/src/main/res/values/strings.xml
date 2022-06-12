@@ -9,7 +9,7 @@
     <string name="btn_detail">Detail</string>
     <string name="title_picture_name">Picture name</string>
     <string name="title_delete">Delete</string>
-    <string name="please_waiting">Please Waiting...</string>
+    <string name="please_waiting">Please Waiting…</string>
     <string name="album_name">Album Name</string>
     <string name="album_items">Album items</string>
     <string name="create_album">Create Album</string>
@@ -19,4 +19,9 @@
     <string name="options">Options</string>
     <string name="delete">delete</string>
     <string name="edit">edit</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="album_name_not_valid">Album name not valid</string>
+    <string name="save_done">Save Done</string>
+    <string name="no_album_available">No Album Available</string>
+    <string name="confirm_delete_pic">Confirm Delete Picture</string>
 </resources>

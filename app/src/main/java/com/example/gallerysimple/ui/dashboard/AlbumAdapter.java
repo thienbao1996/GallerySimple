@@ -91,7 +91,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         public void onBind(Album album, int position) {
             albumName.setText(album.getName());
             if (album.getName().equalsIgnoreCase(Constant.ALBUM_DEFAULT) ||
-                    album.getName().equalsIgnoreCase(Constant.ALBUM_FAVORITE)) {
+                    album.getName().equalsIgnoreCase(Constant.ALBUM_FAVORITE) ||
+                    album.getName().equalsIgnoreCase(Constant.ALBUM_RECYCLE_BIN)) {
                 albumMenu.setVisibility(View.GONE);
             }
 

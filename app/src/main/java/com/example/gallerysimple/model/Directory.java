@@ -33,6 +33,9 @@ public class Directory {
     @ColumnInfo(name = "duration")
     public long duration = 0;
 
+    @ColumnInfo(name = "isDelete")
+    private int isDelete = 0;
+
     public Directory(int id, String path, String name, long modified, long taken, long size, String types) {
         this.id = id;
         this.path = path;
@@ -60,4 +63,12 @@ public class Directory {
     }
 
     public Directory() {}
+
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
+    }
 }

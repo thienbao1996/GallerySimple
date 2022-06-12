@@ -27,6 +27,9 @@ public interface AlbumItemsDao {
     @Query("DELETE FROM albumItems WHERE aid = :id")
     Completable deleteItemByAlbumId(int id);
 
+    @Query("DELETE FROM albumItems WHERE path = :path")
+    Completable deleteItemByPicPath(String path);
+
     @Query("SELECT * FROM albumItems")
     Single<List<AlbumItems>> getItems();
 

@@ -41,8 +41,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void deleteAlbum(int id, int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Confirm Delete");
-                builder.setPositiveButton("Detele", (dialog, which) -> {
+                builder.setTitle(R.string.confirm_delete);
+                builder.setPositiveButton(getString(R.string.delete), (dialog, which) -> {
                     dashboardViewModel.deleteAlbum(id);
                     adapter.deleteAlbumAtPosition(position);
                 });

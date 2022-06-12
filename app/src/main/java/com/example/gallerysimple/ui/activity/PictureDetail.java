@@ -64,7 +64,7 @@ public class PictureDetail extends AppCompatActivity {
             } else
                 Glide.with(this).load(new File(path)).centerInside().into(binding.imgPicture);
 
-            disposable.add(database.directoryDao().getDirectorieById(idDir)
+            disposable.add(database.directoryDao().getDirectoriesById(idDir)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(directory -> {
@@ -81,7 +81,7 @@ public class PictureDetail extends AppCompatActivity {
                 AlbumDao albumDao = database.albumDao();
                 DirectoryDao directoryDao = database.directoryDao();
 
-                disposable.add(directoryDao.getDirectorieById(idDir)
+                disposable.add(directoryDao.getDirectoriesById(idDir)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(directory -> {
@@ -137,16 +137,17 @@ public class PictureDetail extends AppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(albums -> {
-                        if (albums.size() > 2) {
-                            String[] albumNames = new String[albums.size() - 2];
-                            boolean[] checkedItems = new boolean[albums.size() - 2];
-                            int[] albumIds = new int[albums.size() - 2];
+                        if (albums.size() > 3) {
+                            String[] albumNames = new String[albums.size() - 3];
+                            boolean[] checkedItems = new boolean[albums.size() - 3];
+                            int[] albumIds = new int[albums.size() - 3];
 
                             Iterator<Album> iterator = albums.iterator();
                             while (iterator.hasNext()) {
                                 Album album = iterator.next();
                                 if (album.getName().equalsIgnoreCase(Constant.ALBUM_FAVORITE) ||
-                                        album.getName().equalsIgnoreCase(Constant.ALBUM_DEFAULT)) {
+                                        album.getName().equalsIgnoreCase(Constant.ALBUM_DEFAULT) ||
+                                        album.getName().equalsIgnoreCase(Constant.ALBUM_RECYCLE_BIN)) {
                                     iterator.remove();
                                 }
                             }
@@ -205,15 +206,56 @@ public class PictureDetail extends AppCompatActivity {
                                                     );
                                                 }
                                             }
-                                            Toast.makeText(this, "Save Done", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(this, getString(R.string.save_done), Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
                                         });
                                         chooseAlbum.create().show();
                                     })
                             );
+                        } else {
+                            Toast.makeText(this, getString(R.string.no_album_available), Toast.LENGTH_SHORT).show();
                         }
                     }, Throwable::printStackTrace)
             ));
+
+            binding.btnDelete.setOnClickListener(v -> {
+                // Logic to delete picture
+                // set picture to be deleted, delete all link to album and add picture to recycle bin
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.confirm_delete_pic);
+                builder.setPositiveButton(getString(R.string.delete), (dialog, which) -> {
+                    disposable.add(database.directoryDao().setDirDelete(idDir)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(() -> Log.d("room", "Set picture delete"),
+                                    Throwable::printStackTrace)
+                    );
+
+                    disposable.add(database.albumItemsDao().deleteItemByPicPath(path)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(() -> Log.d("room", "delete items by album: "),
+                                    Throwable::printStackTrace)
+                    );
+
+                    disposable.add(database.albumDao().getAlbumByName(Constant.ALBUM_RECYCLE_BIN)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(recycleBin -> disposable.add(database.albumItemsDao().insertItem(path, recycleBin.getId())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(() -> {
+                                                Log.d("room", "Insert picture to Recycle Bin");
+                                                finish();
+                                            },
+                                            Throwable::printStackTrace)
+                            ), Throwable::printStackTrace)
+                    );
+                });
+                builder.setNegativeButton(getString(R.string.title_cancel),
+                        (dialog, which) -> dialog.dismiss());
+                builder.create().show();
+            });
         }
     }
 

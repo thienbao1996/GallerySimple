@@ -23,16 +23,22 @@ public class CreateNewAlbumDialog extends Dialog {
         MaterialButton rightButton = findViewById(R.id.btn_right);
 
         leftButton.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(name.getText().toString())) {
+            if (!isInvalidAlbumName(name.getText().toString())) {
                 callback.createAlbum(name.getText().toString());
                 dismiss();
             } else {
-                Toast.makeText(context, "Album name not valid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.album_name_not_valid),
+                        Toast.LENGTH_SHORT).show();
             }
         });
         rightButton.setOnClickListener(v -> dismiss());
     }
 
+    private boolean isInvalidAlbumName(String name) {
+        return TextUtils.isEmpty(name) || name.equalsIgnoreCase(Constant.ALBUM_DEFAULT) ||
+                name.equalsIgnoreCase(Constant.ALBUM_FAVORITE) ||
+                name.equalsIgnoreCase(Constant.ALBUM_RECYCLE_BIN);
+    }
 
     public interface CreateNewAlbumCallback {
         void createAlbum(String albumName);

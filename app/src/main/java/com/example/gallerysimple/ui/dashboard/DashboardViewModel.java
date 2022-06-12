@@ -70,6 +70,7 @@ public class DashboardViewModel extends ViewModel {
                         Throwable::printStackTrace)
         );
 
+        // delete all item picture link to album
         disposable.add(database.albumItemsDao().deleteItemByAlbumId(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
