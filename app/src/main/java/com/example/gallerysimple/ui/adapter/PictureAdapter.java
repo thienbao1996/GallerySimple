@@ -1,4 +1,4 @@
-package com.example.gallerysimple.ui.home;
+package com.example.gallerysimple.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

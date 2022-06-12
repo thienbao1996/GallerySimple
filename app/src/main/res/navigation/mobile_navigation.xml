@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.gallerysimple.ui.home.HomeFragment"
+        android:name="com.example.gallerysimple.ui.fragment.HomeFragment"
         android:label="@string/title_picture"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.gallerysimple.ui.dashboard.DashboardFragment"
+        android:name="com.example.gallerysimple.ui.fragment.DashboardFragment"
         android:label="@string/title_album"
         tools:layout="@layout/fragment_dashboard" />
 </navigation>

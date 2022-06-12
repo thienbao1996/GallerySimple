@@ -1,4 +1,4 @@
-package com.example.gallerysimple.ui.home;
+package com.example.gallerysimple.ui.viewmodel;
 
 import android.util.Log;
 

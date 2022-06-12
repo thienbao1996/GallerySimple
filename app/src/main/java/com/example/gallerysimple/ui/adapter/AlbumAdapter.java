@@ -1,10 +1,11 @@
-package com.example.gallerysimple.ui.dashboard;
+package com.example.gallerysimple.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -110,6 +111,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                         String content = albumItems.size() > 0 ? albumItems.size() + " items" :
                                 albumItems.size() + " item";
                         items.setText(content);
+
+
                     }, Throwable::printStackTrace)
             );
 
@@ -128,11 +131,27 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     return false;
                 });
             });
+
+            disposable.add(database.albumItemsDao().getItemsByAlbumId(album.getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(albumItems -> {
+                        itemView.setOnClickListener(v -> {
+                            if (albumItems.size() > 0) {
+                                popupMenuCallback.moveToAlbumDetail(album);
+                            } else {
+                                Toast.makeText(itemView.getContext(), R.string.message_album_unavailable
+                                        , Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }, Throwable::printStackTrace)
+            );
         }
     }
 
     public interface PopupMenuCallback {
         void deleteAlbum(int id, int position);
         void editAlbum(Album album, int position);
+        void moveToAlbumDetail(Album album);
     }
 }

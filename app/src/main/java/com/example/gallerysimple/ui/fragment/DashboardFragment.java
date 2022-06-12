@@ -1,6 +1,7 @@
-package com.example.gallerysimple.ui.dashboard;
+package com.example.gallerysimple.ui.fragment;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gallerysimple.R;
 import com.example.gallerysimple.databinding.FragmentDashboardBinding;
 import com.example.gallerysimple.model.Album;
+import com.example.gallerysimple.ui.activity.AlbumDetailActivity;
+import com.example.gallerysimple.ui.adapter.AlbumAdapter;
+import com.example.gallerysimple.ui.viewmodel.DashboardViewModel;
 import com.example.gallerysimple.util.CreateNewAlbumDialog;
 import com.example.gallerysimple.util.EditAlbumDialog;
 
@@ -59,6 +63,16 @@ public class DashboardFragment extends Fragment {
                         adapter.updateAlbumAtPosition(album, position);
                     });
                     dialog.show();
+                }
+            }
+
+            @Override
+            public void moveToAlbumDetail(Album album) {
+                if (getContext() != null) {
+                    Intent intent = new Intent(getActivity(), AlbumDetailActivity.class);
+                    intent.putExtra("ALBUM_ID", album.getId());
+                    intent.putExtra("ALBUM_NAME", album.getName());
+                    startActivity(intent);
                 }
             }
         });

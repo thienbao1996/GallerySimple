@@ -33,6 +33,9 @@ public interface DirectoryDao {
     @Query("UPDATE directories SET isDelete = 1 WHERE id = :id")
     Completable setDirDelete(int id);
 
+    @Query("UPDATE directories SET isDelete = 0 WHERE path LIKE :path")
+    Completable restoreDir(String path);
+
     @Update
-    Completable updateDirectories(Directory ... directories);
+    Completable updateDirectories(Directory... directories);
 }

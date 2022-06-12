@@ -24,4 +24,9 @@
     <string name="save_done">Save Done</string>
     <string name="no_album_available">No Album Available</string>
     <string name="confirm_delete_pic">Confirm Delete Picture</string>
+    <string name="media_name">Media Name</string>
+    <string name="media_thumbnail">Media Thumbnail</string>
+    <string name="restore">Restore</string>
+    <string name="confirm_restore">Confirm Restore</string>
+    <string name="message_album_unavailable">Album Doesn\'t have item!</string>
 </resources>

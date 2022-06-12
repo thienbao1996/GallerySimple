@@ -1,4 +1,4 @@
-package com.example.gallerysimple.ui.home;
+package com.example.gallerysimple.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gallerysimple.databinding.FragmentHomeBinding;
 import com.example.gallerysimple.ui.activity.PictureDetail;
+import com.example.gallerysimple.ui.adapter.PictureAdapter;
+import com.example.gallerysimple.ui.viewmodel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 
@@ -42,15 +44,9 @@ public class HomeFragment extends Fragment {
         picturesRecyclerView.setAdapter(adapter);
 
         homeViewModel.getListPictureAndVideo().observe(getViewLifecycleOwner(), adapter::setData);
-        //homeViewModel.loadAllPictureAndImage();
+        homeViewModel.loadAllPictureAndImage();
 
         return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        homeViewModel.loadAllPictureAndImage();
     }
 
     @Override
