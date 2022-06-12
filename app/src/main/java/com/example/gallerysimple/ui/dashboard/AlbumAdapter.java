@@ -66,7 +66,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     public void deleteAlbumAtPosition(int position) {
         albums.remove(position);
-        notifyItemChanged(position);
+        notifyDataSetChanged();
     }
 
     public void updateAlbumAtPosition(Album album, int position) {
@@ -132,7 +132,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     public interface PopupMenuCallback {
         void deleteAlbum(int id, int position);
-
         void editAlbum(Album album, int position);
     }
 }

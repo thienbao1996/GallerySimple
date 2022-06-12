@@ -1,6 +1,7 @@
 package com.example.gallerysimple.ui.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import com.bumptech.glide.Glide;
 import com.example.gallerysimple.GalleryApplication;
 import com.example.gallerysimple.R;
 import com.example.gallerysimple.databinding.ActivityPictureDetailBinding;
+import com.example.gallerysimple.model.Album;
 import com.example.gallerysimple.model.AlbumDao;
+import com.example.gallerysimple.model.AlbumItems;
 import com.example.gallerysimple.model.AlbumItemsDao;
 import com.example.gallerysimple.model.DirectoryDao;
 import com.example.gallerysimple.util.AppDatabase;
@@ -25,6 +28,7 @@ import com.example.gallerysimple.util.Constant;
 import com.example.gallerysimple.util.Utils;
 
 import java.io.File;
+import java.util.Iterator;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -129,9 +133,87 @@ public class PictureDetail extends AppCompatActivity {
                 );
             });
 
-            binding.btnAddItemToAlbum.setOnClickListener(v -> {
+            binding.btnAddItemToAlbum.setOnClickListener(v -> disposable.add(database.albumDao().getAllAlbums()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(albums -> {
+                        if (albums.size() > 2) {
+                            String[] albumNames = new String[albums.size() - 2];
+                            boolean[] checkedItems = new boolean[albums.size() - 2];
+                            int[] albumIds = new int[albums.size() - 2];
 
-            });
+                            Iterator<Album> iterator = albums.iterator();
+                            while (iterator.hasNext()) {
+                                Album album = iterator.next();
+                                if (album.getName().equalsIgnoreCase(Constant.ALBUM_FAVORITE) ||
+                                        album.getName().equalsIgnoreCase(Constant.ALBUM_DEFAULT)) {
+                                    iterator.remove();
+                                }
+                            }
+
+                            for (int index = 0; index < albumNames.length; index++) {
+                                albumNames[index] = albums.get(index).getName();
+                                albumIds[index] = albums.get(index).getId();
+                                checkedItems[index] = false;
+                            }
+
+                            // check picture already in album list
+                            disposable.add(database.albumItemsDao().getItemByPathAndAlbumID(path, albumIds)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(list -> {
+                                        for (AlbumItems item : list) {
+                                            for (int index = 0; index < albumIds.length; index++) {
+                                                if (item.getAid() == albumIds[index]) {
+                                                    checkedItems[index] = true;
+                                                }
+                                            }
+                                        }
+
+                                        AlertDialog.Builder chooseAlbum = new AlertDialog.Builder(this);
+                                        chooseAlbum.setTitle("Choose Album to add");
+                                        chooseAlbum.setMultiChoiceItems(albumNames, checkedItems,
+                                                (dialog, which, isChecked) -> checkedItems[which] = isChecked);
+                                        chooseAlbum.setCancelable(true);
+                                        chooseAlbum.setNegativeButton(getString(R.string.title_cancel),
+                                                (dialog, which) -> dialog.dismiss());
+                                        chooseAlbum.setPositiveButton("Add", (dialog, which) -> {
+                                            for (int index = 0; index < albumNames.length; index++) {
+                                                if (checkedItems[index]) {
+                                                    // check picture already in album
+                                                    int finalIndex = index;
+                                                    disposable.add(database.albumItemsDao().getItem(path, albumIds[index])
+                                                            .subscribeOn(Schedulers.io())
+                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                            .subscribe(count -> {
+                                                                if (count == 0) {
+                                                                    disposable.add(database.albumItemsDao().insertItem(path, albums.get(finalIndex).getId())
+                                                                            .subscribeOn(Schedulers.io())
+                                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                                            .subscribe(() -> Log.d("room", "insert item " + path),
+                                                                                    Throwable::printStackTrace)
+                                                                    );
+                                                                }
+                                                            })
+                                                    );
+                                                } else {
+                                                    disposable.add(database.albumItemsDao().deleteItem(path, albums.get(index).getId())
+                                                            .subscribeOn(Schedulers.io())
+                                                            .observeOn(AndroidSchedulers.mainThread())
+                                                            .subscribe(() -> Log.d("room", "insert item " + path),
+                                                                    Throwable::printStackTrace)
+                                                    );
+                                                }
+                                            }
+                                            Toast.makeText(this, "Save Done", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                        });
+                                        chooseAlbum.create().show();
+                                    })
+                            );
+                        }
+                    }, Throwable::printStackTrace)
+            ));
         }
     }
 
