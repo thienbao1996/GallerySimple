@@ -35,12 +35,17 @@ import com.google.android.exoplayer2.MediaItem;
 import java.io.File;
 import java.util.Iterator;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
+@AndroidEntryPoint
 public class PictureDetail extends AppCompatActivity {
-    private final AppDatabase database = GalleryApplication.getDatabase();
+    @Inject
+    AppDatabase database;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private boolean requestPicturesReload = false;
 

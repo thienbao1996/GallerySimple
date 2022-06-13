@@ -17,13 +17,17 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class DashboardViewModel extends ViewModel {
-    private final AppDatabase database = GalleryApplication.getDatabase();
+    private AppDatabase database;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     private final MutableLiveData<List<Album>> mListAlbum = new MutableLiveData<>();
 
     public DashboardViewModel() {
 
+    }
+
+    public void setDatabase(AppDatabase database) {
+        this.database = database;
     }
 
     public LiveData<List<Album>> getLiveDataListAlbum() {

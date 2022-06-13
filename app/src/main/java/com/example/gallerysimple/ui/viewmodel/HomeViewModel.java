@@ -16,10 +16,14 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class HomeViewModel extends ViewModel {
-    private final AppDatabase database = GalleryApplication.getDatabase();
+    private AppDatabase database;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     private final MutableLiveData<List<Directory>> mListPictureAndVideo;
+
+    public void setDatabase(AppDatabase database) {
+        this.database = database;
+    }
 
     public HomeViewModel() {
         MutableLiveData<String> mText = new MutableLiveData<>();

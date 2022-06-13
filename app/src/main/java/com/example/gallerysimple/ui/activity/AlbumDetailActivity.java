@@ -14,10 +14,18 @@ import com.example.gallerysimple.R;
 import com.example.gallerysimple.databinding.ActivityAlbumDetailBinding;
 import com.example.gallerysimple.ui.adapter.AlbumMediaAdapter;
 import com.example.gallerysimple.ui.viewmodel.AlbumDetailViewModel;
+import com.example.gallerysimple.util.AppDatabase;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class AlbumDetailActivity extends AppCompatActivity {
     private ActivityAlbumDetailBinding binding;
     private AlbumDetailViewModel viewModel;
+    @Inject
+    AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(AlbumDetailViewModel.class);
+        viewModel.setDatabase(database);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)

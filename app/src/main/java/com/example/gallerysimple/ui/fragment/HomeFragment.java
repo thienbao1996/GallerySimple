@@ -16,15 +16,24 @@ import com.example.gallerysimple.databinding.FragmentHomeBinding;
 import com.example.gallerysimple.ui.activity.PictureDetail;
 import com.example.gallerysimple.ui.adapter.PictureAdapter;
 import com.example.gallerysimple.ui.viewmodel.HomeViewModel;
+import com.example.gallerysimple.util.AppDatabase;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
+    @Inject
+    AppDatabase database;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+       homeViewModel.setDatabase(database);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

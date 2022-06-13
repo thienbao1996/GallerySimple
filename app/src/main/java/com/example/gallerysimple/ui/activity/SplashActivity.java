@@ -30,15 +30,20 @@ import com.example.gallerysimple.util.MediaLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 public class SplashActivity extends AppCompatActivity {
+    @Inject
+    AppDatabase database;
     private final CompositeDisposable disposable = new CompositeDisposable();
-    private final AppDatabase database = GalleryApplication.getDatabase();
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -72,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == Constant.REQUEST_PERMISSION_CODE) {
+        if (requestCode == Constant.REQUEST_PERMISSION_CODE && grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 disposable.add(Completable.fromRunnable(this::initDBContent)
                         .subscribeOn(Schedulers.io())

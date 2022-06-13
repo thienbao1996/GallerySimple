@@ -15,6 +15,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.gallerysimple.R;
 import com.example.gallerysimple.databinding.ActivityMainBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)

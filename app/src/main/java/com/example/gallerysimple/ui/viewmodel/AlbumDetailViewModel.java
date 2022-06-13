@@ -9,17 +9,23 @@ import com.example.gallerysimple.util.AppDatabase;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AlbumDetailViewModel extends ViewModel {
-    private final AppDatabase database = GalleryApplication.getDatabase();
+    private AppDatabase database;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private MutableLiveData<List<AlbumItems>> mAlbumItem = new MutableLiveData<>();
 
     public MutableLiveData<List<AlbumItems>> getAlbumItemLiveData() {
         return mAlbumItem;
+    }
+
+    public void setDatabase(AppDatabase database) {
+        this.database = database;
     }
 
     public void loadAlbumItems(int albumId) {

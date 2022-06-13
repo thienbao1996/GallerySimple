@@ -6,19 +6,9 @@ import androidx.room.Room;
 
 import com.example.gallerysimple.util.AppDatabase;
 
+import dagger.hilt.android.HiltAndroidApp;
+
+@HiltAndroidApp
 public class GalleryApplication extends Application {
-    private static AppDatabase database;
 
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        database = Room.databaseBuilder(this,
-                AppDatabase.class, AppDatabase.class.getSimpleName()).build();
-    }
-
-    public static AppDatabase getDatabase() {
-        return database;
-    }
 }

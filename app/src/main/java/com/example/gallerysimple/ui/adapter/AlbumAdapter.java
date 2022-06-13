@@ -29,8 +29,12 @@ import io.reactivex.schedulers.Schedulers;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
     private List<Album> albums = new ArrayList<>();
     private final CompositeDisposable disposable = new CompositeDisposable();
-    private final AppDatabase database = GalleryApplication.getDatabase();
+    private AppDatabase database;
     private PopupMenuCallback popupMenuCallback;
+
+    public AlbumAdapter(AppDatabase database) {
+        this.database = database;
+    }
 
     @NonNull
     @Override

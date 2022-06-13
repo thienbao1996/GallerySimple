@@ -19,17 +19,26 @@ import com.example.gallerysimple.model.Album;
 import com.example.gallerysimple.ui.activity.AlbumDetailActivity;
 import com.example.gallerysimple.ui.adapter.AlbumAdapter;
 import com.example.gallerysimple.ui.viewmodel.DashboardViewModel;
+import com.example.gallerysimple.util.AppDatabase;
 import com.example.gallerysimple.util.CreateNewAlbumDialog;
 import com.example.gallerysimple.util.EditAlbumDialog;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
     DashboardViewModel dashboardViewModel;
+    @Inject
+    AppDatabase database;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        dashboardViewModel.setDatabase(database);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -39,7 +48,7 @@ public class DashboardFragment extends Fragment {
                 , RecyclerView.VERTICAL, false);
         albumRecyclerView.setLayoutManager(gridLayoutManager);
 
-        AlbumAdapter adapter = new AlbumAdapter();
+        AlbumAdapter adapter = new AlbumAdapter(database);
         albumRecyclerView.setAdapter(adapter);
         adapter.setPopupMenuCallback(new AlbumAdapter.PopupMenuCallback() {
             @Override
