@@ -58,6 +58,7 @@ public class PictureDetail extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.hide();
         }
 
@@ -277,7 +278,9 @@ public class PictureDetail extends AppCompatActivity {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(() -> {
                                                 Log.d("room", "Insert picture to Recycle Bin");
-                                                finish();
+                                                Intent a = new Intent(this, MainActivity.class);
+                                                a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                startActivity(a);
                                             },
                                             Throwable::printStackTrace)
                             ), Throwable::printStackTrace)
@@ -304,8 +307,9 @@ public class PictureDetail extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         if (requestPicturesReload) {
-            setResult(Activity.RESULT_OK);
-            finish();
+            Intent a = new Intent(this, MainActivity.class);
+            a.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(a);
         }
     }
 

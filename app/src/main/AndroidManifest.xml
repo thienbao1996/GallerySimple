@@ -40,7 +40,11 @@
             android:name=".ui.activity.PictureDetail"
             android:exported="false"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.gallerysimple.ui.activity.MainActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="false"

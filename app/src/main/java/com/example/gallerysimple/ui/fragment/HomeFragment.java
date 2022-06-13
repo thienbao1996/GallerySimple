@@ -47,8 +47,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), PictureDetail.class);
             intent.putExtra("path", item.path);
             intent.putExtra("id", item.id);
-            if (getActivity() != null)
-                startActivity(intent);
+            startActivity(intent);
         });
         picturesRecyclerView.setAdapter(adapter);
 
