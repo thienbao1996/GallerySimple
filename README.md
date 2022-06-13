@@ -36,3 +36,5 @@ All techology used:
 
 ![album_detail_func](https://user-images.githubusercontent.com/38234174/173272125-73e990e1-953f-43d1-aa22-39d8bf8d9526.png)
 **Album detail sreen**: Show all item of album. When this is Recycle Bin, provide feature restore image/video.
+
+Future feature: Apply Dagger, Hilt for Dependence Injecttion.
