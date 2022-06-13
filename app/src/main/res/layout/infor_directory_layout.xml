@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D74A4949"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:layout_marginTop="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/txt_dirPath" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dirName"
+        app:layout_constraintBottom_toTopOf="@+id/txt_dirType" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dirPath"
+        app:layout_constraintBottom_toTopOf="@+id/txt_dirDateTaken" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirDateTaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dirType"
+        app:layout_constraintBottom_toTopOf="@+id/txt_dirLastModify" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirLastModify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dirDateTaken"
+        app:layout_constraintBottom_toTopOf="@+id/txt_dirSize" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dirLastModify"
+        app:layout_constraintBottom_toTopOf="@+id/txt_dirDuration" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_dirDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:paddingStart="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_dirSize"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

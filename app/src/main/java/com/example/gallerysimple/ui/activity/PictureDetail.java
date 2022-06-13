@@ -27,6 +27,7 @@ import com.example.gallerysimple.model.AlbumItemsDao;
 import com.example.gallerysimple.model.DirectoryDao;
 import com.example.gallerysimple.util.AppDatabase;
 import com.example.gallerysimple.util.Constant;
+import com.example.gallerysimple.util.InforDirectoryDialog;
 import com.example.gallerysimple.util.Utils;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -281,6 +282,16 @@ public class PictureDetail extends AppCompatActivity {
                         (dialog, which) -> dialog.dismiss());
                 builder.create().show();
             });
+
+            binding.btnDetail.setOnClickListener(v -> disposable.add(database.directoryDao().getDirectoriesById(idDir)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(directory -> {
+                        InforDirectoryDialog inforDirectoryDialog = new InforDirectoryDialog(this, directory);
+                        inforDirectoryDialog.setCancelable(true);
+                        inforDirectoryDialog.show();
+                    }, Throwable::printStackTrace)
+            ));
         }
     }
 
